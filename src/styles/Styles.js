@@ -5,6 +5,7 @@ const {StyleSheet} = React;
 const white = '#fff',
   whiteSmoke = '#f2f2f2',
   purple = '#5a52a5',
+  red = '#ff5050',
   blue = '#4d88ff',
   gray = '#999999',
   grayBlack = '#404040',
@@ -55,6 +56,40 @@ const style = {
         paddingVertical: 15,
         borderRadius: 5,
       },
+      menuBox: {
+        alignSelf: 'center',
+        width: '100%',
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginTop: 35,
+      },
+      itemMenu: {
+        width: '30%',
+      },
+    }),
+    carousell: StyleSheet.create({
+      box: {
+        alignSelf: 'center',
+        width: '90%',
+        borderRadius: 10,
+        padding: 20,
+      },
+      title: {
+        fontSize: 18,
+      },
+      body: {
+        fontSize: 30,
+        marginVertical: 25,
+      },
+    }),
+    navigation: StyleSheet.create({
+      nav: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        paddingVertical: 10,
+      },
     }),
   },
 
@@ -94,6 +129,7 @@ const style = {
   bg: StyleSheet.create({
     purple: {backgroundColor: purple},
     blue: {backgroundColor: blue},
+    red: {backgroundColor: red},
     white: {backgroundColor: white},
     whiteSmoke: {backgroundColor: whiteSmoke},
     gray: {backgroundColor: gray},
@@ -104,6 +140,7 @@ const style = {
   text: StyleSheet.create({
     purple: {color: purple},
     blue: {color: blue},
+    red: {color: red},
     white: {color: white},
     whiteSmoke: {color: whiteSmoke},
     gray: {color: gray},

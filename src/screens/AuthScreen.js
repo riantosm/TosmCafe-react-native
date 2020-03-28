@@ -41,8 +41,8 @@ export default class AuthScreen extends Component {
     incorrect: null,
 
     form: false,
-    username: '',
-    password: '',
+    username: 'Admin',
+    password: 'A',
   };
 
   componentDidMount() {
@@ -438,6 +438,7 @@ export default class AuthScreen extends Component {
                     <Input
                       onChangeText={this.handleChange('username')}
                       style={styles.font.air}
+                      value={this.state.username}
                     />
                   </Item>
                   <Item floatingLabel style={{borderColor: colorBlue}}>
@@ -446,6 +447,7 @@ export default class AuthScreen extends Component {
                       onChangeText={this.handleChange('password')}
                       style={styles.font.air}
                       secureTextEntry={true}
+                      value={this.state.password}
                     />
                   </Item>
                 </Form>

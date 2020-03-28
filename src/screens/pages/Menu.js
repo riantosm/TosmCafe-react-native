@@ -11,7 +11,7 @@ export default class Menu extends Component {
     super();
     this.state = {};
   }
-  
+
   componentDidMount() {}
 
   render() {
@@ -29,6 +29,10 @@ export default class Menu extends Component {
         <TouchableOpacity onPress={() => Actions.replace('logout')}>
           <Text>Logout</Text>
         </TouchableOpacity>
+
+        <View style={[styles.custom.navigation.nav, styles.bg.blue]}>
+          <Text>Btom</Text>
+        </View>
       </>
     );
   }
