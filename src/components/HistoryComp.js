@@ -7,7 +7,7 @@ import styles from '../styles/Styles';
 
 const HistoryComp = props => {
   return (
-    <View style={[styles.margin.vertical[20]]}>
+    <View style={[styles.margin.vertical[20],styles.margin.top[50]]}>
       <View style={styles.flex.directionRow}>
         <Animated.View
           style={[
@@ -19,7 +19,7 @@ const HistoryComp = props => {
               }),
             },
           ]}>
-          <View style={{alignSelf: 'flex-start', marginLeft: 20}}>
+          <View style={{alignSelf: 'flex-start', marginLeft: 10}}>
             <Text
               style={[
                 styles.custom.carousell.title,
@@ -29,13 +29,13 @@ const HistoryComp = props => {
               ]}>
               Today's incomes
             </Text>
-            <View style={[styles.flex.directionRow, styles.margin.left[10]]}>
+            <View style={[styles.flex.directionRow, styles.align.self]}>
               <Text
                 style={[
                   styles.font.size12,
                   styles.text.white,
                   styles.font.googleSansBold,
-                  {textAlignVertical: 'top', paddingTop: 5},
+                  {textAlignVertical: 'top', paddingTop: 10},
                 ]}>
                 Rp{' '}
               </Text>
@@ -47,7 +47,7 @@ const HistoryComp = props => {
                   styles.text.green,
                   styles.text.center,
                 ]}>
-                422.000
+                1.425.500
               </Text>
             </View>
             <Text
@@ -74,7 +74,7 @@ const HistoryComp = props => {
               }),
             },
           ]}>
-          <View style={{alignSelf: 'flex-end', marginRight: 20}}>
+          <View style={{alignSelf: 'flex-end', marginRight: 10}}>
             <Text
               style={[
                 styles.custom.carousell.title,
@@ -84,7 +84,7 @@ const HistoryComp = props => {
               ]}>
               Year's incomes
             </Text>
-            <View style={[styles.flex.directionRow, styles.margin.left[10]]}>
+            <View style={[styles.flex.directionRow,styles.align.self]}>
               <Text
                 style={[
                   styles.font.size12,
@@ -102,7 +102,7 @@ const HistoryComp = props => {
                   styles.text.green,
                   styles.text.center,
                 ]}>
-                42.422.000
+                74.222.500
               </Text>
             </View>
             <TouchableOpacity>

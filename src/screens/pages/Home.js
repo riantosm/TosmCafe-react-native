@@ -29,6 +29,7 @@ export default class Home extends Component {
       BgMiddle: new Animated.Value(0),
 
       TitleOpacity: new Animated.Value(0),
+      TitleMt: new Animated.Value(0),
 
       HistoryOpacity: new Animated.Value(0),
       HistoryToCenter: new Animated.Value(0),
@@ -45,6 +46,7 @@ export default class Home extends Component {
       BgBottom,
       BgMiddle,
       TitleOpacity,
+      TitleMt,
       HistoryOpacity,
       HistoryToCenter,
     } = this.state;
@@ -63,24 +65,29 @@ export default class Home extends Component {
         this.setState({
           shadowOval: true,
         });
-        // show title
-        Animated.timing(TitleOpacity, {
+        // show
+        Animated.timing(TitleMt, {
           toValue: 1,
           duration: 500,
-          useNativeDriver: true,
-        }).start(() => {
-          // show history
-          Animated.timing(HistoryOpacity, {
+          useNativeDriver: false,
+        }).start(),
+          Animated.timing(TitleOpacity, {
             toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-          }).start(),
-            Animated.timing(HistoryToCenter, {
+            duration: 500,
+            useNativeDriver: false,
+          }).start(() => {
+            // show history
+            Animated.timing(HistoryOpacity, {
               toValue: 1,
               duration: 1000,
-              useNativeDriver: false,
-            }).start();
-        });
+              useNativeDriver: true,
+            }).start(),
+              Animated.timing(HistoryToCenter, {
+                toValue: 1,
+                duration: 1000,
+                useNativeDriver: false,
+              }).start();
+          });
       }),
     ]);
   }
@@ -88,7 +95,7 @@ export default class Home extends Component {
   render() {
     return (
       <>
-        <StatusBar backgroundColor={colorBlue} barStyle="light-content" />
+        <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
         <ScrollView
           behavior="padding"
           style={[styles.bg.whiteSmoke, {flex: 1}]}>
@@ -125,35 +132,49 @@ export default class Home extends Component {
                 ]}>
                 <Animated.View
                   style={[
-                    styles.flex.directionRow,
-                    {opacity: this.state.TitleOpacity},
+                    styles.bg.white,
+                    {
+                      opacity: this.state.TitleOpacity,
+                      height: 18,
+                      top: this.state.TitleMt.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [-120, 0],
+                      }),
+                    },
                   ]}>
-                  <Text
-                    style={[
-                      styles.font.air,
-                      styles.text.white,
-                      // styles.text.center,
-                      styles.font.size30,
-                      styles.width.percent[50],
-                      styles.margin.top[10],
-                      styles.margin.bottom[10],
-                    ]}>
-                    TosmCafe
-                  </Text>
-                  <Text
-                    style={[
-                      styles.width.percent[50],
-                      styles.margin.top[20],
-                      styles.margin.bottom[10],
-                      styles.text.right,
-                      {textAlignVertical: 'center'},
-                    ]}>
-                    <IconMC
-                      name="logout"
-                      style={[styles.align.selfRight, styles.text.whiteBlack]}
-                      size={25}
+                  <View style={[styles.flex.directionRow]}>
+                    <View
+                      style={[
+                        styles.width.percent[20],
+                        styles.bg.blue,
+                        styles.custom._.logoHomeLeft,
+                      ]}
                     />
-                  </Text>
+                    <View
+                      style={[
+                        styles.bg.white,
+                        styles.width.percent[60],
+                        styles.custom._.logoHome,
+                      ]}>
+                      <Text
+                        style={[
+                          styles.font.air,
+                          styles.text.blue,
+                          styles.text.center,
+                          styles.font.size25,
+                          styles.margin.top[10],
+                        ]}>
+                        TosmCafe
+                      </Text>
+                    </View>
+                    <View
+                      style={[
+                        styles.width.percent[20],
+                        styles.bg.blue,
+                        styles.custom._.logoHomeRight,
+                      ]}
+                    />
+                  </View>
                 </Animated.View>
                 {/* <View style={{width:100,borderWidth:1,alignSelf:'center',borderColor:'#fff'}}></View> */}
 

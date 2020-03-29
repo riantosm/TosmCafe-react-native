@@ -20,6 +20,17 @@ const white = '#fff',
 const style = {
   custom: {
     _: StyleSheet.create({
+      logoHome:{
+        paddingBottom:5,
+        borderBottomLeftRadius:20,
+        borderBottomRightRadius:20,
+      },
+      logoHomeLeft:{
+        borderTopRightRadius:20,
+      },
+      logoHomeRight:{
+        borderTopLeftRadius:20,
+      },
       logoTitle: {
         fontSize: 30,
         color: '#fff',
