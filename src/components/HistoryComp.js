@@ -7,7 +7,7 @@ import styles from '../styles/Styles';
 
 const HistoryComp = props => {
   return (
-    <View style={[styles.margin.vertical[20],styles.margin.top[50]]}>
+    <View style={[styles.margin.vertical[20], styles.margin.top[50]]}>
       <View style={styles.flex.directionRow}>
         <Animated.View
           style={[
@@ -24,7 +24,7 @@ const HistoryComp = props => {
               style={[
                 styles.custom.carousell.title,
                 styles.font.gothaMed,
-                styles.text.whiteBlack,
+                styles.text.white,
                 styles.text.center,
               ]}>
               Today's incomes
@@ -53,7 +53,7 @@ const HistoryComp = props => {
             <Text
               style={[
                 styles.font.googleSansReg,
-                styles.text.whiteBlack,
+                styles.text.white,
                 styles.text.center,
                 styles.font.size15,
               ]}>
@@ -79,12 +79,12 @@ const HistoryComp = props => {
               style={[
                 styles.custom.carousell.title,
                 styles.font.gothaMed,
-                styles.text.whiteBlack,
+                styles.text.white,
                 styles.text.center,
               ]}>
               Year's incomes
             </Text>
-            <View style={[styles.flex.directionRow,styles.align.self]}>
+            <View style={[styles.flex.directionRow, styles.align.self]}>
               <Text
                 style={[
                   styles.font.size12,
@@ -105,11 +105,11 @@ const HistoryComp = props => {
                 74.222.500
               </Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => alert('View Detail')}>
               <Text
                 style={[
                   styles.font.googleSansReg,
-                  styles.text.whiteBlack,
+                  styles.text.white,
                   styles.text.center,
                   styles.font.size15,
                 ]}>

@@ -9,14 +9,14 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
-import Menu from './Menu';
 import BackScreen from '../BackScreen';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
+import HistoryComp from '../../components/HistoryComp';
+import MenuComp from '../../components/MenuCompo';
 
 // Styles
 import styles from '../../styles/Styles';
-import HistoryComp from '../../components/HistoryComp';
 
 let colorBlue = '#294EA0';
 
@@ -33,6 +33,9 @@ export default class Home extends Component {
 
       HistoryOpacity: new Animated.Value(0),
       HistoryToCenter: new Animated.Value(0),
+
+      MenuOpacity: new Animated.Value(0),
+      MenuMt: new Animated.Value(0),
     };
   }
 
@@ -41,15 +44,7 @@ export default class Home extends Component {
   }
 
   openOval() {
-    const {
-      BgTop,
-      BgBottom,
-      BgMiddle,
-      TitleOpacity,
-      TitleMt,
-      HistoryOpacity,
-      HistoryToCenter,
-    } = this.state;
+    const {BgTop, BgBottom, BgMiddle} = this.state;
     Animated.parallel([
       // open up bg oval
       Animated.timing(BgTop, {
@@ -64,31 +59,65 @@ export default class Home extends Component {
       }).start(() => {
         this.setState({
           shadowOval: true,
-        });
-        // show
-        Animated.timing(TitleMt, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: false,
-        }).start(),
-          Animated.timing(TitleOpacity, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: false,
-          }).start(() => {
-            // show history
-            Animated.timing(HistoryOpacity, {
-              toValue: 1,
-              duration: 1000,
-              useNativeDriver: true,
-            }).start(),
-              Animated.timing(HistoryToCenter, {
-                toValue: 1,
-                duration: 1000,
-                useNativeDriver: false,
-              }).start();
-          });
+        }),
+          // show title
+          this.showTitle();
       }),
+    ]);
+  }
+
+  showTitle() {
+    const {TitleMt, TitleOpacity} = this.state;
+    Animated.parallel([
+      Animated.timing(TitleMt, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start(),
+      Animated.timing(TitleOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start(() => {
+        // show history
+        this.showHistory(),
+          // show menu
+          this.showMenu();
+      }),
+    ]);
+  }
+
+  showHistory() {
+    const {HistoryOpacity, HistoryToCenter} = this.state;
+    Animated.parallel([
+      Animated.timing(HistoryOpacity, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start(),
+      Animated.timing(HistoryToCenter, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start(),
+    ]);
+  }
+
+  showMenu() {
+    const {MenuOpacity, MenuMt} = this.state;
+    Animated.parallel([
+      Animated.timing(MenuOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start(),
+      Animated.spring(MenuMt, {
+        toValue: 1,
+        tension: 10,
+        friction: 2,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start(),
     ]);
   }
 
@@ -183,64 +212,16 @@ export default class Home extends Component {
                   <HistoryComp toCenter toCenter={this.state.HistoryToCenter} />
                 </Animated.View>
                 {/* }History */}
-
-                <View
-                  style={[
-                    styles.bg.white,
-                    styles.shadow.md,
-                    styles.custom._.menuBox,
-                    styles.flex.directionRow,
-                    styles.flex.justify,
-                  ]}>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="silverware"
-                      style={styles.align.self}
-                      size={30}
-                      style={[styles.text.blue, styles.text.center]}
-                    />
-                    <Text
-                      style={[
-                        styles.text.center,
-                        styles.font.air,
-                        styles.text.blue,
-                      ]}>
-                      Product
-                    </Text>
-                  </View>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="plus-circle-outline"
-                      style={styles.align.self}
-                      size={30}
-                      style={[styles.text.blue, styles.text.center]}
-                    />
-                    <Text
-                      style={[
-                        styles.text.center,
-                        styles.font.air,
-                        styles.text.blue,
-                      ]}>
-                      Cart
-                    </Text>
-                  </View>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="history"
-                      style={styles.align.self}
-                      size={30}
-                      style={[styles.text.blue, styles.text.center]}
-                    />
-                    <Text
-                      style={[
-                        styles.text.center,
-                        styles.font.air,
-                        styles.text.blue,
-                      ]}>
-                      History
-                    </Text>
-                  </View>
-                </View>
+                <Animated.View
+                  style={{
+                    opacity: this.state.MenuOpacity,
+                    top: this.state.MenuMt.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [20, 0],
+                    }),
+                  }}>
+                  <MenuComp />
+                </Animated.View>
               </Animated.View>
             </Animated.View>
             {/* middle */}
