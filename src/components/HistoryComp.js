@@ -7,7 +7,13 @@ import styles from '../styles/Styles';
 
 const HistoryComp = props => {
   return (
-    <View style={[styles.margin.vertical[20], styles.margin.top[50]]}>
+    <View
+      style={[
+        styles.margin.vertical[20],
+        styles.margin.top[50],
+        styles.width.percent[90],
+        styles.align.self,
+      ]}>
       <View style={styles.flex.directionRow}>
         <Animated.View
           style={[

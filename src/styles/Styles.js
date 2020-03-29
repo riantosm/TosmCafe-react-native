@@ -10,7 +10,7 @@ const white = '#fff',
   red = '#a02929',
   green = '#49d066',
   yellow = '#d3da71',
-  orange='#ffb31a',
+  orange = '#ffb31a',
   blue = '#294EA0',
   blueAqua = '#7ED8E0',
   gray = '#999999',
@@ -20,16 +20,16 @@ const white = '#fff',
 const style = {
   custom: {
     _: StyleSheet.create({
-      logoHome:{
-        paddingBottom:5,
-        borderBottomLeftRadius:20,
-        borderBottomRightRadius:20,
+      logoHome: {
+        paddingBottom: 5,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
       },
-      logoHomeLeft:{
-        borderTopRightRadius:20,
+      logoHomeLeft: {
+        borderTopRightRadius: 20,
       },
-      logoHomeRight:{
-        borderTopLeftRadius:20,
+      logoHomeRight: {
+        borderTopLeftRadius: 20,
       },
       logoTitle: {
         fontSize: 30,
@@ -54,8 +54,8 @@ const style = {
         position: 'absolute',
         zIndex: 2,
         backgroundColor: 'transparent',
-        paddingLeft: 15,
-        paddingRight: 15,
+        // paddingLeft: 15,
+        // paddingRight: 15,
         top: 120,
       },
       textContainer: {
@@ -135,12 +135,13 @@ const style = {
   align: StyleSheet.create({
     self: {alignSelf: 'center'},
     selfLeft: {alignSelf: 'flex-start'},
-    selfRight: {alignSelf:'flex-end'},
+    selfRight: {alignSelf: 'flex-end'},
     content: {alignContent: 'flex-start'},
   }),
 
   flex: StyleSheet.create({
     directionRow: {flexDirection: 'row'},
+    wrap: {flexWrap: 'wrap'},
     justify: {justifyContent: 'space-between'},
   }),
 
@@ -176,9 +177,12 @@ const style = {
     gray: {color: gray},
     grayBlack: {color: grayBlack},
     black: {color: black},
+
     center: {textAlign: 'center'},
     left: {textAlign: 'left'},
     right: {textAlign: 'right'},
+    top: {textAlignVertical:'top'},
+    bottom: {textAlignVertical:'bottom'},
   }),
 
   font: StyleSheet.create({

@@ -8,6 +8,7 @@ import {
   Animated,
   Dimensions,
   StatusBar,
+  KeyboardAvoidingView,
 } from 'react-native';
 import BackScreen from '../BackScreen';
 import IconFA from 'react-native-vector-icons/FontAwesome';
@@ -17,6 +18,7 @@ import MenuComp from '../../components/MenuCompo';
 
 // Styles
 import styles from '../../styles/Styles';
+import ListCategoryComp from '../../components/ListCategoryComp';
 
 let colorBlue = '#294EA0';
 
@@ -36,6 +38,32 @@ export default class Home extends Component {
 
       MenuOpacity: new Animated.Value(0),
       MenuMt: new Animated.Value(0),
+
+      ListCategoryOpacity: new Animated.Value(0),
+      ListCategoryMt: new Animated.Value(0),
+
+      category: [
+        {
+          id: 1,
+          name: 'All',
+        },
+        {
+          id: 2,
+          name: 'Food',
+        },
+        {
+          id: 3,
+          name: 'Drink',
+        },
+        {
+          id: 4,
+          name: 'Dessert',
+        },
+        {
+          id: 5,
+          name: 'Topping',
+        },
+      ],
     };
   }
 
@@ -82,7 +110,13 @@ export default class Home extends Component {
         // show history
         this.showHistory(),
           // show menu
-          this.showMenu();
+          setInterval(() => {
+            this.showMenu();
+            // show list category
+            setInterval(() => {
+              this.showListCategory();
+            }, 500);
+          }, 500);
       }),
     ]);
   }
@@ -115,7 +149,25 @@ export default class Home extends Component {
         toValue: 1,
         tension: 10,
         friction: 2,
-        duration: 1000,
+        duration: 200,
+        useNativeDriver: false,
+      }).start(),
+    ]);
+  }
+
+  showListCategory() {
+    const {ListCategoryOpacity, ListCategoryMt} = this.state;
+    Animated.parallel([
+      Animated.timing(ListCategoryOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false,
+      }).start(),
+      Animated.spring(ListCategoryMt, {
+        toValue: 1,
+        tension: 10,
+        friction: 2,
+        duration: 500,
         useNativeDriver: false,
       }).start(),
     ]);
@@ -205,13 +257,14 @@ export default class Home extends Component {
                     />
                   </View>
                 </Animated.View>
-                {/* <View style={{width:100,borderWidth:1,alignSelf:'center',borderColor:'#fff'}}></View> */}
 
                 {/* History{ */}
                 <Animated.View style={{opacity: this.state.HistoryOpacity}}>
-                  <HistoryComp toCenter toCenter={this.state.HistoryToCenter} />
+                  <HistoryComp toCenter={this.state.HistoryToCenter} />
                 </Animated.View>
                 {/* }History */}
+
+                {/* Menu{ */}
                 <Animated.View
                   style={{
                     opacity: this.state.MenuOpacity,
@@ -222,6 +275,17 @@ export default class Home extends Component {
                   }}>
                   <MenuComp />
                 </Animated.View>
+                {/* }Menu */}
+
+                {/* Category{ */}
+                <Animated.View
+                  style={{opacity: this.state.ListCategoryOpacity}}>
+                  <ListCategoryComp
+                  ListCategoryMt={this.state.ListCategoryMt}
+                  category={this.state.category}
+                  />
+                  {/* }Category */}
+                </Animated.View>
               </Animated.View>
             </Animated.View>
             {/* middle */}
@@ -231,10 +295,11 @@ export default class Home extends Component {
               style={[
                 styles.custom._.bgBottom,
                 {
-                  height: 200,
+                  height: 300,
+                  // borderWidth: 1,
                 },
               ]}>
-              <View style={styles.container.center}>
+              <View style={styles.container.top}>
                 {/* oval */}
                 <Animated.View
                   style={[
@@ -255,24 +320,9 @@ export default class Home extends Component {
                     },
                   ]}
                 />
-                <Text>Text here</Text>
               </View>
             </Animated.View>
             {/* bottom */}
-
-            {/* bottom */}
-            {/* <Animated.View
-              style={[
-                styles.custom._.bgBottom,
-                {
-                  // height: 300,
-                },
-              ]}>
-              <View style={styles.container.top}>
-                <Text>sasd</Text>
-              </View>
-            </Animated.View> */}
-            {/* <Menu /> */}
           </View>
         </ScrollView>
         <BackScreen />

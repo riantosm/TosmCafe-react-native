@@ -16,8 +16,11 @@ const MenuComp = props => {
         styles.custom._.menuBox,
         styles.flex.directionRow,
         styles.flex.justify,
+        styles.width.percent[90],
       ]}>
-      <TouchableOpacity style={[styles.custom._.itemMenu]} onPress={() => alert('Menu Product')}>
+      <TouchableOpacity
+        style={[styles.custom._.itemMenu]}
+        onPress={() => alert('Menu Product')}>
         <View>
           <IconMC
             name="silverware"
@@ -30,7 +33,9 @@ const MenuComp = props => {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.custom._.itemMenu]} onPress={() => alert('Menu Cart')}>
+      <TouchableOpacity
+        style={[styles.custom._.itemMenu]}
+        onPress={() => alert('Menu Cart')}>
         <View>
           <IconMC
             name="cart-plus"
@@ -43,7 +48,9 @@ const MenuComp = props => {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.custom._.itemMenu]} onPress={() => alert('Menu History')}>
+      <TouchableOpacity
+        style={[styles.custom._.itemMenu]}
+        onPress={() => alert('Menu History')}>
         <View>
           <IconMC
             name="history"
