@@ -4,9 +4,14 @@ const {StyleSheet} = React;
 
 const white = '#fff',
   whiteSmoke = '#f2f2f2',
-  purple = '#5a52a5',
-  red = '#ff5050',
-  blue = '#4d88ff',
+  whiteBlack = '#d9d9d9',
+  whiteRed = '#f8f0ee',
+  purple = '#a02994',
+  red = '#a02929',
+  green = '#29a043',
+  yellow = '#98a029',
+  blue = '#294EA0',
+  blueAqua = '#7ED8E0',
   gray = '#999999',
   grayBlack = '#404040',
   black = '#000';
@@ -37,8 +42,8 @@ const style = {
         position: 'absolute',
         zIndex: 2,
         backgroundColor: 'transparent',
-        paddingLeft: 26,
-        paddingRight: 26,
+        paddingLeft: 15,
+        paddingRight: 15,
         top: 120,
       },
       textContainer: {
@@ -62,7 +67,7 @@ const style = {
         borderRadius: 10,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        marginTop: 35,
+        marginTop: 10,
       },
       itemMenu: {
         width: '30%',
@@ -118,6 +123,7 @@ const style = {
   align: StyleSheet.create({
     self: {alignSelf: 'center'},
     selfLeft: {alignSelf: 'flex-start'},
+    selfRight: {alignSelf:'flex-end'},
     content: {alignContent: 'flex-start'},
   }),
 
@@ -129,9 +135,14 @@ const style = {
   bg: StyleSheet.create({
     purple: {backgroundColor: purple},
     blue: {backgroundColor: blue},
+    blueAqua: {backgroundColor: blueAqua},
+    green: {backgroundColor: green},
+    yellow: {backgroundColor: yellow},
     red: {backgroundColor: red},
     white: {backgroundColor: white},
+    whiteBlack: {backgroundColor: whiteBlack},
     whiteSmoke: {backgroundColor: whiteSmoke},
+    whiteRed: {backgroundColor: whiteRed},
     gray: {backgroundColor: gray},
     grayBlack: {backgroundColor: grayBlack},
     black: {backgroundColor: black},
@@ -140,13 +151,20 @@ const style = {
   text: StyleSheet.create({
     purple: {color: purple},
     blue: {color: blue},
+    blueAqua: {color: blueAqua},
+    green: {color: green},
+    yellow: {color: yellow},
     red: {color: red},
     white: {color: white},
+    whiteBlack: {color: whiteBlack},
     whiteSmoke: {color: whiteSmoke},
+    whiteRed: {color: whiteRed},
     gray: {color: gray},
     grayBlack: {color: grayBlack},
     black: {color: black},
     center: {textAlign: 'center'},
+    left: {textAlign: 'left'},
+    right: {textAlign: 'right'},
   }),
 
   font: StyleSheet.create({

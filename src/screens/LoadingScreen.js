@@ -14,7 +14,7 @@ import {Actions} from 'react-native-router-flux';
 // Styles
 import styles from '../styles/Styles';
 
-let colorBlue = '#4d88ff';
+let colorBlue = '#294EA0';
 
 export default class LoadingScreen extends Component {
   constructor(props) {

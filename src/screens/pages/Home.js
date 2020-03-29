@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
-  Dimensions,
+  Dimensions,StatusBar
 } from 'react-native';
 import Menu from './Menu';
 import BackScreen from '../BackScreen';
@@ -15,8 +15,9 @@ import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Styles
 import styles from '../../styles/Styles';
+import HistoryComp from '../../components/HistoryComp';
 
-let colorBlue = '#4d88ff';
+let colorBlue = '#294EA0';
 
 export default class Home extends Component {
   constructor() {
@@ -29,6 +30,7 @@ export default class Home extends Component {
   render() {
     return (
       <>
+      <StatusBar backgroundColor={colorBlue} barStyle="light-content" />
         <ScrollView
           behavior="padding"
           style={[styles.bg.whiteSmoke, {flex: 1}]}>
@@ -36,20 +38,132 @@ export default class Home extends Component {
             {/* top */}
             <Animated.View
               style={[
-                styles.bg.blue,
+                styles.bg.red,
                 styles.shadow.none,
                 styles.custom._.bgTop,
                 {
-                  height: 250,
+                  height: 200,
                 },
               ]}>
               <View style={styles.container.top}></View>
             </Animated.View>
+            {/* top */}
+
+            {/* middle */}
+            <Animated.View
+              style={[
+                styles.custom._.bgMiddle,
+                styles.shadow.md,
+                {opacity: 1, top: 0},
+              ]}>
+              <Animated.View
+                style={[
+                  {
+                    marginTop: 0,
+                  },
+                ]}>
+                <View style={styles.flex.directionRow}>
+                  <Text
+                    style={[
+                      styles.font.air,
+                      styles.text.white,
+                      // styles.text.center,
+                      styles.font.size30,
+                      styles.width.percent[50],
+                      styles.margin.top[20],
+                      styles.margin.bottom[10],
+                    ]}>
+                    TosmCafe
+                  </Text>
+                  <Text
+                    style={[
+                      styles.width.percent[50],
+                      styles.margin.top[20],
+                      styles.margin.bottom[10],
+                      styles.text.right,
+                      {textAlignVertical: 'center'},
+                    ]}>
+                    <IconMC
+                      name="logout"
+                      style={styles.align.selfRight}
+                      size={25}
+                      color="white"
+                    />
+                  </Text>
+                </View>
+                {/* <View style={{width:100,borderWidth:1,alignSelf:'center',borderColor:'#fff'}}></View> */}
+
+                {/* History{ */}
+                <HistoryComp />
+                {/* }History */}
+
+                <View
+                  style={[
+                    styles.bg.white,
+                    styles.shadow.md,
+                    styles.custom._.menuBox,
+                    styles.flex.directionRow,
+                    styles.flex.justify,
+                  ]}>
+                  <View style={[styles.custom._.itemMenu]}>
+                    <IconMC
+                      name="silverware"
+                      style={styles.align.self}
+                      size={30}
+                      style={[styles.text.blue, styles.text.center]}
+                    />
+                    <Text
+                      style={[
+                        styles.text.center,
+                        styles.font.air,
+                        styles.text.blue,
+                      ]}>
+                      Product
+                    </Text>
+                  </View>
+                  <View style={[styles.custom._.itemMenu]}>
+                    <IconMC
+                      name="plus-circle-outline"
+                      style={styles.align.self}
+                      size={30}
+                      style={[styles.text.blue, styles.text.center]}
+                    />
+                    <Text
+                      style={[
+                        styles.text.center,
+                        styles.font.air,
+                        styles.text.blue,
+                      ]}>
+                      Cart
+                    </Text>
+                  </View>
+                  <View style={[styles.custom._.itemMenu]}>
+                    <IconMC
+                      name="history"
+                      style={styles.align.self}
+                      size={30}
+                      style={[styles.text.blue, styles.text.center]}
+                    />
+                    <Text
+                      style={[
+                        styles.text.center,
+                        styles.font.air,
+                        styles.text.blue,
+                      ]}>
+                      History
+                    </Text>
+                  </View>
+                </View>
+              </Animated.View>
+            </Animated.View>
+            {/* middle */}
+
+            {/* bottom */}
             <Animated.View
               style={[
                 styles.custom._.bgBottom,
                 {
-                  height: 300,
+                  height: 200,
                 },
               ]}>
               <View style={styles.container.center}>
@@ -74,102 +188,13 @@ export default class Home extends Component {
                     },
                   ]}
                 />
+                <Text>s</Text>
               </View>
             </Animated.View>
-            
-            {/* middle */}
-            <Animated.View
-              style={[
-                styles.custom._.bgMiddle,
-                styles.shadow.md,
-                {opacity: 1, top: 0},
-              ]}>
-              <Animated.View
-                style={[
-                  {
-                    marginTop: 0,
-                  },
-                ]}>
-                <Text
-                  style={[
-                    styles.font.air,
-                    styles.text.white,
-                    styles.font.size30,
-                    styles.width.percent[100],
-                    styles.margin.vertical[20],
-                  ]}>
-                  TosmCafe
-                </Text>
-
-                {/* Carousell space{ */}
-                <View
-                  style={[
-                    styles.bg.white,
-                    styles.custom.carousell.box,
-                    styles.shadow.md,
-                  ]}>
-                  <Text
-                    style={[
-                      styles.custom.carousell.title,
-                      styles.font.googleSansBold,
-                      styles.text.center,
-                      styles.text.red,
-                    ]}>
-                    Today's incomes
-                  </Text>
-                  <Text
-                    style={[
-                      styles.custom.carousell.body,
-                      styles.font.googleSansReg,
-                      styles.text.center,
-                      styles.text.red,
-                    ]}>
-                    Rp 550.000
-                  </Text>
-                </View>
-                {/* }Carousell space */}
-
-                <View
-                  style={[
-                    styles.bg.white,
-                    styles.shadow.md,
-                    styles.custom._.menuBox,
-                    styles.flex.directionRow,
-                    styles.flex.justify,
-                  ]}>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="silverware"
-                      style={styles.align.self}
-                      size={30}
-                      color="gray"
-                    />
-                    <Text style={styles.text.center}>Product</Text>
-                  </View>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="tag-multiple"
-                      style={styles.align.self}
-                      size={30}
-                      color="gray"
-                    />
-                    <Text style={styles.text.center}>Category</Text>
-                  </View>
-                  <View style={[styles.custom._.itemMenu]}>
-                    <IconMC
-                      name="plus-circle-outline"
-                      style={styles.align.self}
-                      size={30}
-                      color="gray"
-                    />
-                    <Text style={styles.text.center}>Cart</Text>
-                  </View>
-                </View>
-              </Animated.View>
-            </Animated.View>
+            {/* bottom */}
 
             {/* bottom */}
-            <Animated.View
+            {/* <Animated.View
               style={[
                 styles.custom._.bgBottom,
                 {
@@ -179,7 +204,7 @@ export default class Home extends Component {
               <View style={styles.container.top}>
                 <Text>sasd</Text>
               </View>
-            </Animated.View>
+            </Animated.View> */}
             {/* <Menu /> */}
           </View>
         </ScrollView>

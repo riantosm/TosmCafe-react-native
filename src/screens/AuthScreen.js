@@ -20,7 +20,7 @@ import {Actions} from 'react-native-router-flux';
 // Styles
 import styles from '../styles/Styles';
 
-let colorBlue = '#4d88ff';
+let colorBlue = '#294EA0';
 
 export default class AuthScreen extends Component {
   state = {
@@ -403,7 +403,7 @@ export default class AuthScreen extends Component {
                 <Text
                   style={[
                     styles.custom._.textContainer,
-                    styles.text.white,
+                    styles.text.whiteRed,
                     styles.font.size30,
                     styles.font.googleSansBold,
                   ]}>
@@ -488,7 +488,7 @@ export default class AuthScreen extends Component {
                     styles.margin.bottom[10],
                   ]}>
                   <View>
-                    <Text style={[styles.text.white, styles.text.center]}>
+                    <Text style={[styles.text.white, styles.font.air, styles.text.center]}>
                       Login
                     </Text>
                   </View>
@@ -520,12 +520,12 @@ export default class AuthScreen extends Component {
                 <Animated.View
                   style={[
                     this.state.shadowOval ? styles.shadow.md : styles.shadow.n,
+                    styles.bg.blue,
                     {
                       position: 'absolute',
                       top: -600,
                       width: Dimensions.get('window').width + 440,
                       height: Dimensions.get('window').width + 440,
-                      backgroundColor: colorBlue,
                       borderStartWidth: 0,
                       borderBottomStartRadius: 1000,
                       transform: [
