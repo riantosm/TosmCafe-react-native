@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
-  Dimensions,StatusBar
+  Dimensions,
+  StatusBar,
 } from 'react-native';
 import Menu from './Menu';
 import BackScreen from '../BackScreen';
@@ -22,15 +23,72 @@ let colorBlue = '#294EA0';
 export default class Home extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      BgTop: new Animated.Value(0),
+      BgBottom: new Animated.Value(0),
+      BgMiddle: new Animated.Value(0),
+
+      TitleOpacity: new Animated.Value(0),
+
+      HistoryOpacity: new Animated.Value(0),
+      HistoryToCenter: new Animated.Value(0),
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.openOval();
+  }
+
+  openOval() {
+    const {
+      BgTop,
+      BgBottom,
+      BgMiddle,
+      TitleOpacity,
+      HistoryOpacity,
+      HistoryToCenter,
+    } = this.state;
+    Animated.parallel([
+      // open up bg oval
+      Animated.timing(BgTop, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start(),
+      Animated.timing(BgBottom, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start(() => {
+        this.setState({
+          shadowOval: true,
+        });
+        // show title
+        Animated.timing(TitleOpacity, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => {
+          // show history
+          Animated.timing(HistoryOpacity, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start(),
+            Animated.timing(HistoryToCenter, {
+              toValue: 1,
+              duration: 1000,
+              useNativeDriver: false,
+            }).start();
+        });
+      }),
+    ]);
+  }
 
   render() {
     return (
       <>
-      <StatusBar backgroundColor={colorBlue} barStyle="light-content" />
+        <StatusBar backgroundColor={colorBlue} barStyle="light-content" />
         <ScrollView
           behavior="padding"
           style={[styles.bg.whiteSmoke, {flex: 1}]}>
@@ -38,11 +96,14 @@ export default class Home extends Component {
             {/* top */}
             <Animated.View
               style={[
-                styles.bg.red,
+                styles.bg.blue,
                 styles.shadow.none,
                 styles.custom._.bgTop,
                 {
-                  height: 200,
+                  height: this.state.BgTop.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [Dimensions.get('window').height + 100, 200],
+                  }),
                 },
               ]}>
               <View style={styles.container.top}></View>
@@ -62,7 +123,11 @@ export default class Home extends Component {
                     marginTop: 0,
                   },
                 ]}>
-                <View style={styles.flex.directionRow}>
+                <Animated.View
+                  style={[
+                    styles.flex.directionRow,
+                    {opacity: this.state.TitleOpacity},
+                  ]}>
                   <Text
                     style={[
                       styles.font.air,
@@ -70,7 +135,7 @@ export default class Home extends Component {
                       // styles.text.center,
                       styles.font.size30,
                       styles.width.percent[50],
-                      styles.margin.top[20],
+                      styles.margin.top[10],
                       styles.margin.bottom[10],
                     ]}>
                     TosmCafe
@@ -85,16 +150,17 @@ export default class Home extends Component {
                     ]}>
                     <IconMC
                       name="logout"
-                      style={styles.align.selfRight}
+                      style={[styles.align.selfRight, styles.text.whiteBlack]}
                       size={25}
-                      color="white"
                     />
                   </Text>
-                </View>
+                </Animated.View>
                 {/* <View style={{width:100,borderWidth:1,alignSelf:'center',borderColor:'#fff'}}></View> */}
 
                 {/* History{ */}
-                <HistoryComp />
+                <Animated.View style={{opacity: this.state.HistoryOpacity}}>
+                  <HistoryComp toCenter toCenter={this.state.HistoryToCenter} />
+                </Animated.View>
                 {/* }History */}
 
                 <View
@@ -170,8 +236,7 @@ export default class Home extends Component {
                 {/* oval */}
                 <Animated.View
                   style={[
-                    // this.state.shadowOval ? styles.shadow.md : styles.shadow.n,
-                    styles.shadow.md,
+                    this.state.shadowOval ? styles.shadow.md : styles.shadow.n,
                     {
                       position: 'absolute',
                       top: -600,
@@ -188,7 +253,7 @@ export default class Home extends Component {
                     },
                   ]}
                 />
-                <Text>s</Text>
+                <Text>Text here</Text>
               </View>
             </Animated.View>
             {/* bottom */}
