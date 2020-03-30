@@ -1,5 +1,14 @@
 import React from 'react';
-import {View, Text, Animated, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Animated,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+  TextInput,
+  Image,
+} from 'react-native';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Styles
@@ -7,18 +16,18 @@ import styles from '../styles/Styles';
 
 const renderListCategory = (category, index) => {
   return (
-    <TouchableOpacity onPress={() => alert(`Show product by ${category.name}`)}>
+    <TouchableOpacity
+      onPress={() => alert(`Show product by ${category.name}`)}
+      key={category.id}>
       <View
-        key={category.id}
         style={[
           styles.bg.white,
-          styles.shadow.md,
+          styles.shadow.sm,
           {
             borderRadius: 10,
             paddingHorizontal: 20,
             paddingVertical: 10,
-            margin: 20,
-            marginRight: 15,
+            margin: 15,
             marginLeft: index ? 0 : 20,
           },
         ]}>
@@ -38,7 +47,7 @@ const ListCategoryComp = props => {
           // opacity: props.ListCategoryOpacity,
           marginTop: props.ListCategoryMt.interpolate({
             inputRange: [0, 1],
-            outputRange: [50, 30],
+            outputRange: [50, 20],
           }),
         },
       ]}>
@@ -51,15 +60,17 @@ const ListCategoryComp = props => {
           ]}>
           <Text
             style={[
-              styles.width.percent[80],
+              styles.width.percent[40],
               styles.font.air,
+              styles.text.bottom,
               styles.font.size20,
               styles.text.grayBlack,
+              styles.height.normal[30],
             ]}>
-            Category Product
+            Product
           </Text>
           <TouchableOpacity
-            style={[styles.width.percent[20]]}
+            style={[styles.width.percent[60]]}
             onPress={() => alert('List Category')}>
             <Text
               style={[
@@ -67,17 +78,18 @@ const ListCategoryComp = props => {
                 styles.text.right,
                 styles.text.bottom,
                 styles.text.blue,
+                styles.height.normal[30],
               ]}>
-              Edit
+              Edit Category
               <IconMC
                 name="square-edit-outline"
-                style={styles.align.self}
+                style={[styles.align.self, styles.text.top]}
                 size={15}
-                style={[styles.text.center]}
               />
             </Text>
           </TouchableOpacity>
         </View>
+
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -86,6 +98,93 @@ const ListCategoryComp = props => {
             return renderListCategory(category, index);
           })}
         </ScrollView>
+
+        {/* search */}
+        <View
+          style={[
+            styles.width.percent[90],
+            styles.align.self,
+            styles.margin.bottom[10],
+            styles.custom.carousell.box,
+            styles.bg.white,
+            styles.shadow.sm,
+          ]}>
+          <TextInput
+            placeholder="Search..."
+            style={[
+              {
+                borderBottomWidth: 1,
+                borderBottomColor: 'gray',
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+              },
+            ]}
+          />
+
+          <FlatList
+            data={props.product}
+            renderItem={({item}) => (
+              <View style={[styles.flex.directionRow, styles.margin.top[20]]}>
+                <View
+                  style={[
+                    styles.flex.directionRow,
+                    styles.flex.justify,
+                    styles.width.percent[100],
+                  ]}>
+                  <Image
+                    source={item.image}
+                    style={[{width: 50, height: 50}]}
+                  />
+                  <View style={[{padding: 7, width: '40%'}]}>
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.text.blue,
+                        styles.font.size15,
+                        styles.font.air,
+                        styles.font.w,
+                      ]}>
+                      {item.name} asd ad asd ad asdadsdasdada
+                    </Text>
+                    <Text
+                      style={[
+                        styles.text.gray,
+                        styles.font.size12,
+                        styles.font.gothaMed,
+                        {paddingTop: 3},
+                      ]}>
+                      {item.category}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      {
+                        width: 'auto',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      },
+                    ]}>
+                    <TouchableOpacity
+                      style={[
+                        styles.height.normal[20],
+                        {paddingHorizontal: 10},
+                      ]}>
+                      <Text style={[styles.font.googleSansBold, styles.text.orange]}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.height.normal[20],
+                        {paddingHorizontal: 10},
+                      ]}>
+                      <Text style={[styles.font.googleSansBold, styles.text.red]}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+        {/* search */}
       </View>
     </Animated.View>
   );

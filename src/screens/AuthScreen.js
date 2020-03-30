@@ -19,6 +19,7 @@ import {Actions} from 'react-native-router-flux';
 
 // Styles
 import styles from '../styles/Styles';
+import VersionComp from '../components/VersionComp';
 
 let colorBlue = '#294EA0';
 
@@ -266,7 +267,11 @@ export default class AuthScreen extends Component {
   render() {
     return (
       <>
-        <StatusBar translucent backgroundColor={colorBlue} barStyle="light-content" />
+        <StatusBar
+          translucent
+          backgroundColor={colorBlue}
+          barStyle="light-content"
+        />
         <ScrollView
           behavior="padding"
           style={[styles.bg.whiteSmoke, {flex: 1}]}>
@@ -388,6 +393,7 @@ export default class AuthScreen extends Component {
             <Animated.View
               style={[
                 styles.custom._.bgMiddle,
+                styles.width.percent[90],
                 styles.shadow.md,
                 {opacity: this.state.TextTitleOpacity},
               ]}>
@@ -427,7 +433,7 @@ export default class AuthScreen extends Component {
                   ]}>
                   TosmCafe
                 </Text>
-                <Form
+                {/* <Form
                   style={[
                     styles.width.percent[90],
                     styles.align.self,
@@ -450,7 +456,7 @@ export default class AuthScreen extends Component {
                       value={this.state.password}
                     />
                   </Item>
-                </Form>
+                </Form> */}
                 {this.state.login ? (
                   <Text
                     style={[
@@ -488,21 +494,18 @@ export default class AuthScreen extends Component {
                     styles.margin.bottom[10],
                   ]}>
                   <View>
-                    <Text style={[styles.text.white, styles.font.air, styles.text.center]}>
+                    <Text
+                      style={[
+                        styles.text.white,
+                        styles.font.air,
+                        styles.text.center,
+                      ]}>
                       Login
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-              <Text
-                style={[
-                  styles.text.center,
-                  styles.text.blue,
-                  styles.font.size12,
-                  styles.font.googleSansBold,
-                ]}>
-                TosmCafe v1.0.0
-              </Text>
+              <VersionComp />
             </Animated.View>
             {/* bottom */}
             <Animated.View

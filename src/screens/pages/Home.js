@@ -19,6 +19,7 @@ import MenuComp from '../../components/MenuCompo';
 // Styles
 import styles from '../../styles/Styles';
 import ListCategoryComp from '../../components/ListCategoryComp';
+import VersionComp from '../../components/VersionComp';
 
 let colorBlue = '#294EA0';
 
@@ -42,26 +43,45 @@ export default class Home extends Component {
       ListCategoryOpacity: new Animated.Value(0),
       ListCategoryMt: new Animated.Value(0),
 
-      category: [
+      VersionOpacity: new Animated.Value(0),
+
+      listCategory: [
+        {id: 1, name: 'All'},
+        {id: 2, name: 'Food'},
+        {id: 3, name: 'Drink'},
+        {id: 4, name: 'Dessert'},
+        {id: 5, name: 'Topping'},
+      ],
+      listProduct: [
         {
           id: 1,
-          name: 'All',
+          name: 'Nasi goreng',
+          image: require('../../../assets/img/product1.png'),
+          category: 'Food',
         },
         {
           id: 2,
-          name: 'Food',
+          name: 'Ayam bakar',
+          image: require('../../../assets/img/product2.png'),
+          category: 'Drink',
         },
         {
           id: 3,
-          name: 'Drink',
+          name: 'Jus alpukat',
+          image: require('../../../assets/img/product3.png'),
+          category: 'Food',
         },
         {
           id: 4,
-          name: 'Dessert',
+          name: 'Air putih',
+          image: require('../../../assets/img/product4.png'),
+          category: 'Food',
         },
         {
           id: 5,
-          name: 'Topping',
+          name: 'Tepung',
+          image: require('../../../assets/img/product5.png'),
+          category: 'Drink',
         },
       ],
     };
@@ -110,11 +130,12 @@ export default class Home extends Component {
         // show history
         this.showHistory(),
           // show menu
-          setInterval(() => {
+          setTimeout(() => {
             this.showMenu();
             // show list category
-            setInterval(() => {
+            setTimeout(() => {
               this.showListCategory();
+              this.version();
             }, 500);
           }, 500);
       }),
@@ -169,6 +190,17 @@ export default class Home extends Component {
         friction: 2,
         duration: 500,
         useNativeDriver: false,
+      }).start(),
+    ]);
+  }
+
+  version() {
+    const {VersionOpacity} = this.state;
+    Animated.parallel([
+      Animated.timing(VersionOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
       }).start(),
     ]);
   }
@@ -276,16 +308,6 @@ export default class Home extends Component {
                   <MenuComp />
                 </Animated.View>
                 {/* }Menu */}
-
-                {/* Category{ */}
-                <Animated.View
-                  style={{opacity: this.state.ListCategoryOpacity}}>
-                  <ListCategoryComp
-                  ListCategoryMt={this.state.ListCategoryMt}
-                  category={this.state.category}
-                  />
-                  {/* }Category */}
-                </Animated.View>
               </Animated.View>
             </Animated.View>
             {/* middle */}
@@ -295,7 +317,7 @@ export default class Home extends Component {
               style={[
                 styles.custom._.bgBottom,
                 {
-                  height: 300,
+                  // height: 300,
                   // borderWidth: 1,
                 },
               ]}>
@@ -321,8 +343,33 @@ export default class Home extends Component {
                   ]}
                 />
               </View>
+
+              {/* Category{ */}
+              <Animated.View
+                style={[
+                  styles.shadow.md,
+                  {
+                    opacity: this.state.ListCategoryOpacity,
+                    marginTop: 50,
+                  },
+                ]}>
+                <ListCategoryComp
+                  ListCategoryMt={this.state.ListCategoryMt}
+                  category={this.state.listCategory}
+                  product={this.state.listProduct}
+                />
+              </Animated.View>
+              {/* }Category */}
             </Animated.View>
             {/* bottom */}
+            <Animated.View
+              style={[
+                styles.padding.padding[20],
+                styles.padding.bottom[30],
+                {opacity: this.state.VersionOpacity},
+              ]}>
+              <VersionComp />
+            </Animated.View>
           </View>
         </ScrollView>
         <BackScreen />

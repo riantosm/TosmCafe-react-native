@@ -20,6 +20,21 @@ const MenuComp = props => {
       ]}>
       <TouchableOpacity
         style={[styles.custom._.itemMenu]}
+        onPress={() => alert('Menu History')}>
+        <View>
+          <IconMC
+            name="home"
+            style={styles.align.self}
+            size={30}
+            style={[styles.text.blue, styles.text.center]}
+          />
+          <Text style={[styles.text.center, styles.font.air, styles.text.blue]}>
+            Home
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.custom._.itemMenu]}
         onPress={() => alert('Menu Product')}>
         <View>
           <IconMC
@@ -45,21 +60,6 @@ const MenuComp = props => {
           />
           <Text style={[styles.text.center, styles.font.air, styles.text.blue]}>
             Cart
-          </Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.custom._.itemMenu]}
-        onPress={() => alert('Menu History')}>
-        <View>
-          <IconMC
-            name="history"
-            style={styles.align.self}
-            size={30}
-            style={[styles.text.blue, styles.text.center]}
-          />
-          <Text style={[styles.text.center, styles.font.air, styles.text.blue]}>
-            History
           </Text>
         </View>
       </TouchableOpacity>
