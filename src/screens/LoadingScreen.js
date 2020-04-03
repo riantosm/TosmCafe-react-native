@@ -14,7 +14,7 @@ import {Actions} from 'react-native-router-flux';
 // Styles
 import styles from '../styles/Styles';
 
-let colorBlue = '#294EA0';
+const colorBlue = '#294EA0';
 
 export default class LoadingScreen extends Component {
   constructor(props) {
@@ -34,33 +34,30 @@ export default class LoadingScreen extends Component {
     }, 1000);
   }
 
+  // animation{
+  animaT = (toValue, duration, useNativeDriver) => ({
+    toValue,
+    duration,
+    useNativeDriver,
+  });
+
+  animaS = (toValue, tension, friction, duration, useNativeDriver) => ({
+    toValue,
+    tension,
+    friction,
+    duration,
+    useNativeDriver,
+  });
+
   openLoading = () => {
     const {LogoOpacity, LogoMt, LogoText, Loading} = this.state;
     Animated.parallel([
-      Animated.spring(LogoMt, {
-        toValue: 0,
-        tension: 10,
-        friction: 2,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(LogoOpacity, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(Loading, {
-        toValue: 1,
-        duration: 2500,
-        useNativeDriver: true,
-      }).start(),
-      Animated.timing(LogoText, {
-        toValue: 1,
-        duration: 1500,
-        useNativeDriver: true,
-      }).start(() => {
+      Animated.spring(LogoMt, this.animaS(0, 10, 2, 1000, false)).start(),
+      Animated.timing(LogoOpacity, this.animaT(1, 1000, false)).start(),
+      Animated.timing(Loading, this.animaT(1, 2500, false)).start(),
+      Animated.timing(LogoText, this.animaT(1, 1500, false)).start(() => {
         this.setState({
-          loadingSpinner: true,
+          loadingSpinner: false,
         });
         setTimeout(() => this.closeLoading(), 1200);
       }),
@@ -70,35 +67,18 @@ export default class LoadingScreen extends Component {
   closeLoading = () => {
     const {LogoOpacity, LogoMt, LogoText, Loading} = this.state;
     Animated.parallel([
-      Animated.spring(LogoMt, {
-        toValue: 1,
-        tension: 10,
-        friction: 5,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(LogoOpacity, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(Loading, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(),
-      Animated.timing(LogoText, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => {
+      Animated.spring(LogoMt, this.animaS(1, 10, 5, 1000, false)).start(),
+      Animated.timing(LogoOpacity, this.animaT(0, 500, false)).start(),
+      Animated.timing(Loading, this.animaT(0, 500, false)).start(),
+      Animated.timing(LogoText, this.animaT(0, 500, false)).start(() => {
         setTimeout(this.switchToAuth, 500);
       }),
     ]);
   };
+  // }animation
 
   switchToAuth = () => {
-    Actions.replace(this.props.data ? this.props.data : 'auth');
+    Actions.replace(this.props.data ? this.props.data : 'home');
   };
 
   render() {
@@ -117,8 +97,7 @@ export default class LoadingScreen extends Component {
             <Image source={Logo} style={styles.custom._.logoImage} />
           </Animated.View>
           <Animated.View style={{opacity: this.state.LogoText}}>
-            <Text
-              style={[styles.custom._.logoTitle, styles.font.air]}>
+            <Text style={[styles.custom._.logoTitle, styles.font.air]}>
               TosmCafe
             </Text>
           </Animated.View>

@@ -37,7 +37,66 @@ const renderListCategory = (category, index) => {
   );
 };
 
-const ListCategoryComp = props => {
+const renderListProduct = (category, index) => {
+  return (
+    <View
+      style={[styles.flex.directionRow, styles.margin.top[20]]}
+      key={category.id}>
+      <View
+        style={[
+          styles.flex.directionRow,
+          styles.flex.justify,
+          styles.width.percent[100],
+        ]}>
+        <Image source={category.image} style={[{width: 50, height: 50}]} />
+        <View style={[{padding: 7, width: '40%'}]}>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.text.blue,
+              styles.font.size15,
+              styles.font.air,
+              styles.font.w,
+            ]}>
+            {category.name} asd ad asd ad asdadsdasdada
+          </Text>
+          <Text
+            style={[
+              styles.text.gray,
+              styles.font.size12,
+              styles.font.gothaMed,
+              {paddingTop: 3},
+            ]}>
+            {category.category}
+          </Text>
+        </View>
+        <View
+          style={[
+            {
+              width: 'auto',
+              alignItems: 'center',
+              flexDirection: 'row',
+            },
+          ]}>
+          <TouchableOpacity
+            style={[styles.height.normal[20], {paddingHorizontal: 10}]}>
+            <Text style={[styles.font.googleSansBold, styles.text.orange]}>
+              Edit
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.height.normal[20], {paddingHorizontal: 10}]}>
+            <Text style={[styles.font.googleSansBold, styles.text.red]}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const ListProductComp = props => {
   return (
     <Animated.View
       style={[
@@ -123,65 +182,7 @@ const ListCategoryComp = props => {
 
           <FlatList
             data={props.product}
-            renderItem={({item}) => (
-              <View style={[styles.flex.directionRow, styles.margin.top[20]]}>
-                <View
-                  style={[
-                    styles.flex.directionRow,
-                    styles.flex.justify,
-                    styles.width.percent[100],
-                  ]}>
-                  <Image
-                    source={item.image}
-                    style={[{width: 50, height: 50}]}
-                  />
-                  <View style={[{padding: 7, width: '40%'}]}>
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles.text.blue,
-                        styles.font.size15,
-                        styles.font.air,
-                        styles.font.w,
-                      ]}>
-                      {item.name} asd ad asd ad asdadsdasdada
-                    </Text>
-                    <Text
-                      style={[
-                        styles.text.gray,
-                        styles.font.size12,
-                        styles.font.gothaMed,
-                        {paddingTop: 3},
-                      ]}>
-                      {item.category}
-                    </Text>
-                  </View>
-                  <View
-                    style={[
-                      {
-                        width: 'auto',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      },
-                    ]}>
-                    <TouchableOpacity
-                      style={[
-                        styles.height.normal[20],
-                        {paddingHorizontal: 10},
-                      ]}>
-                      <Text style={[styles.font.googleSansBold, styles.text.orange]}>Edit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[
-                        styles.height.normal[20],
-                        {paddingHorizontal: 10},
-                      ]}>
-                      <Text style={[styles.font.googleSansBold, styles.text.red]}>Delete</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            )}
+            renderItem={({item, index}) => renderListProduct(item, index)}
           />
         </View>
         {/* search */}
@@ -190,4 +191,4 @@ const ListCategoryComp = props => {
   );
 };
 
-export default ListCategoryComp;
+export default ListProductComp;

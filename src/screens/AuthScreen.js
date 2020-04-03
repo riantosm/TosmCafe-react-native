@@ -21,20 +21,20 @@ import {Actions} from 'react-native-router-flux';
 import styles from '../styles/Styles';
 import VersionComp from '../components/VersionComp';
 
-let colorBlue = '#294EA0';
+const colorBlue = '#294EA0';
 
 export default class AuthScreen extends Component {
   state = {
     BgTop: new Animated.Value(0),
     BgBottom: new Animated.Value(0),
     BgMiddle: new Animated.Value(0),
-    TextTitleOpacity: new Animated.Value(0),
+    TextTitleO: new Animated.Value(0),
     TextTitleMt: new Animated.Value(0),
-    checkingOpacity: new Animated.Value(0),
-    checkingMt: new Animated.Value(0),
-    incorrectOpacity: new Animated.Value(0),
+    checkO: new Animated.Value(0),
+    checkMt: new Animated.Value(0),
+    incorrectO: new Animated.Value(0),
     incorrectMt: new Animated.Value(0),
-    nextOpacity: new Animated.Value(0),
+    nextO: new Animated.Value(0),
     nextMt: new Animated.Value(0),
 
     login: false,
@@ -50,37 +50,37 @@ export default class AuthScreen extends Component {
     this.openForm();
   }
 
+  // animation{
+  animaT = (toValue, duration, useNativeDriver) => ({
+    toValue,
+    duration,
+    useNativeDriver,
+  });
+
+  animaS = (toValue, tension, friction, duration, useNativeDriver) => ({
+    toValue,
+    tension,
+    friction,
+    duration,
+    useNativeDriver,
+  });
+
   openForm() {
-    const {BgTop, BgBottom, TextTitleOpacity, TextTitleMt} = this.state;
+    const {BgTop, BgBottom, TextTitleO, TextTitleMt} = this.state;
     Animated.parallel([
       // open up bg oval
-      Animated.timing(BgTop, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
+      Animated.timing(BgTop, this.animaT(1, 1000, false)).start(),
       // open up bg bottom
-      Animated.timing(BgBottom, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(() => {
+      Animated.timing(BgBottom, this.animaT(1, 1000, false)).start(() => {
         this.setState({
           shadowOval: true,
         });
         // open from login
-        Animated.timing(TextTitleOpacity, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }).start(),
-          Animated.spring(TextTitleMt, {
-            toValue: 1,
-            tension: 5,
-            friction: 2,
-            duration: 500,
-            useNativeDriver: false,
-          }).start();
+        Animated.timing(TextTitleO, this.animaT(1, 1000, false)).start(),
+          Animated.spring(
+            TextTitleMt,
+            this.animaS(1, 5, 2, 500, false),
+          ).start();
       }),
     ]);
     this.setState({
@@ -93,76 +93,46 @@ export default class AuthScreen extends Component {
     const {
       BgTop,
       BgBottom,
-      TextTitleOpacity,
+      TextTitleO,
       TextTitleMt,
-      checkingOpacity,
-      checkingMt,
+      checkO,
+      checkMt,
     } = this.state;
 
     this.setState({
       shadowOval: false,
     });
-
     Animated.parallel([
       // close form login
-      Animated.timing(TextTitleOpacity, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(),
-      Animated.timing(TextTitleMt, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(() => {
+      Animated.timing(TextTitleO, this.animaT(0, 500, false)).start(),
+      Animated.timing(TextTitleMt, this.animaT(0, 500, false)).start(() => {
         // open down bg oval
-        Animated.timing(BgTop, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: false,
-        }).start(),
+        Animated.timing(BgTop, this.animaT(0, 1000, false)).start(),
           // open down bg bottom
-          Animated.timing(BgBottom, {
-            toValue: 0,
-            duration: 1000,
-            useNativeDriver: false,
-          }).start(() => {
+          Animated.timing(BgBottom, this.animaT(0, 1000, false)).start(() => {
             this.setState({
               checking: true,
             });
             // open loading 'please wait'
-            Animated.timing(checkingOpacity, {
-              toValue: 1,
-              duration: 500,
-              useNativeDriver: false,
-            }).start();
-            Animated.spring(checkingMt, {
-              toValue: 1,
-              tension: 5,
-              friction: 2,
-              duration: 500,
-              useNativeDriver: false,
-            }).start(() => {
-              // close loading 'please wait'
-              setTimeout(() => {
-                Animated.timing(checkingOpacity, {
-                  toValue: 0,
-                  duration: 500,
-                  useNativeDriver: false,
-                }).start(),
-                  Animated.timing(checkingMt, {
-                    toValue: 0,
-                    duration: 500,
-                    useNativeDriver: false,
-                  }).start(() => {
-                    this.checkUser();
-                  });
-              }, 2500);
-            });
+            Animated.timing(checkO, this.animaT(1, 500, false)).start();
+            Animated.spring(checkMt, this.animaS(1, 5, 2, 500, false)).start(
+              () => {
+                // close loading 'please wait'
+                setTimeout(() => {
+                  Animated.timing(checkO, this.animaT(0, 500, false)).start(),
+                    Animated.timing(checkMt, this.animaT(0, 500, false)).start(
+                      () => {
+                        this.checkUser();
+                      },
+                    );
+                }, 2500);
+              },
+            );
           });
       }),
     ]);
   }
+  // }animation
 
   handleChange = key => val => {
     this.setState({[key]: val});
@@ -186,9 +156,9 @@ export default class AuthScreen extends Component {
     const {
       username,
       password,
-      incorrectOpacity,
+      incorrectO,
       incorrectMt,
-      nextOpacity,
+      nextO,
       nextMt,
     } = this.state;
     if (username === 'Admin') {
@@ -197,30 +167,12 @@ export default class AuthScreen extends Component {
           incorrect: false,
         }),
         // open 'next userpass'
-        Animated.spring(nextMt, {
-          toValue: 1,
-          tension: 10,
-          friction: 2,
-          duration: 500,
-          useNativeDriver: false,
-        }).start(),
-        Animated.timing(nextOpacity, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: false,
-        }).start(() => {
+        Animated.spring(nextMt, this.animaS(1, 10, 2, 500, false)).start(),
+        Animated.timing(nextO, this.animaT(1, 500, false)).start(() => {
           // close 'next userpass' after 2s
           setTimeout(() => {
-            Animated.timing(nextMt, {
-              toValue: 0,
-              duration: 500,
-              useNativeDriver: false,
-            }).start(),
-              Animated.timing(nextOpacity, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: false,
-              }).start(() => {
+            Animated.timing(nextMt, this.animaT(0, 500, false)).start(),
+              Animated.timing(nextO, this.animaT(0, 500, false)).start(() => {
                 Actions.replace('loading', 'home');
               });
           }, 2500);
@@ -232,32 +184,16 @@ export default class AuthScreen extends Component {
           incorrect: true,
         }),
         // open 'incorrect userpass'
-        Animated.spring(incorrectMt, {
-          toValue: 1,
-          tension: 10,
-          friction: 2,
-          duration: 500,
-          useNativeDriver: false,
-        }).start(),
-        Animated.timing(incorrectOpacity, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: false,
-        }).start(() => {
+        Animated.spring(incorrectMt, this.animaS(1, 10, 2, 500, false)).start(),
+        Animated.timing(incorrectO, this.animaT(1, 500, false)).start(() => {
           // close 'incorrect userpass' after 2s
           setTimeout(() => {
-            Animated.timing(incorrectMt, {
-              toValue: 0,
-              duration: 500,
-              useNativeDriver: false,
-            }).start(),
-              Animated.timing(incorrectOpacity, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: false,
-              }).start(() => {
-                this.openForm();
-              });
+            Animated.timing(incorrectMt, this.animaT(0, 500, false)).start(),
+              Animated.timing(incorrectO, this.animaT(0, 500, false)).start(
+                () => {
+                  this.openForm();
+                },
+              );
           }, 2000);
         }),
       ]);
@@ -272,16 +208,12 @@ export default class AuthScreen extends Component {
           backgroundColor={colorBlue}
           barStyle="light-content"
         />
-        <ScrollView
-          behavior="padding"
-          style={[styles.bg.whiteSmoke, {flex: 1}]}>
+        <ScrollView behavior="padding" style={s.scrollView}>
           <View style={[styles.container.center]}>
             {/* top */}
             <Animated.View
               style={[
-                styles.bg.blue,
-                styles.shadow.none,
-                styles.custom._.bgTop,
+                s.bgTop,
                 {
                   height: this.state.BgTop.interpolate({
                     inputRange: [0, 1],
@@ -293,95 +225,64 @@ export default class AuthScreen extends Component {
                 {this.state.checking ? (
                   <>
                     {this.state.incorrect == true ? (
-                      <>
-                        {/* username password incorrect */}
-                        <Animated.View
-                          style={{
-                            opacity: this.state.incorrectOpacity,
-                            marginTop: this.state.incorrectMt.interpolate({
-                              inputRange: [0, 1],
-                              outputRange: [20, 0],
-                            }),
-                          }}>
-                          <IconFA
-                            name="close"
-                            style={styles.align.self}
-                            size={40}
-                            color="white"
-                          />
-                          <Text
-                            style={[
-                              styles.text.center,
-                              styles.text.white,
-                              styles.font.size25,
-                              styles.font.googleSansBold,
-                              styles.margin.top[20],
-                              styles.padding.horizontal[20],
-                            ]}>
-                            <Text>Incorrect username & password!</Text>
-                          </Text>
-                        </Animated.View>
-                      </>
+                      // username password incorrect
+                      <Animated.View
+                        style={{
+                          opacity: this.state.incorrectO,
+                          marginTop: this.state.incorrectMt.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [20, 0],
+                          }),
+                        }}>
+                        <IconFA
+                          name="close"
+                          style={styles.align.self}
+                          size={40}
+                          color="white"
+                        />
+                        <Text style={s.textChecking}>
+                          <Text>Incorrect username & password!</Text>
+                        </Text>
+                      </Animated.View>
                     ) : this.state.incorrect == false ? (
-                      <>
-                        <Animated.View
-                          style={{
-                            opacity: this.state.nextOpacity,
-                            marginTop: this.state.nextMt.interpolate({
-                              inputRange: [0, 1],
-                              outputRange: [20, 0],
-                            }),
-                          }}>
-                          <IconFA
-                            name="check"
-                            style={styles.align.self}
-                            size={40}
-                            color="white"
-                          />
-                          <Text
-                            style={[
-                              styles.text.center,
-                              styles.text.white,
-                              styles.font.size25,
-                              styles.font.googleSansBold,
-                              styles.margin.top[20],
-                              styles.padding.horizontal[20],
-                            ]}>
-                            <Text>Login success!</Text>
-                          </Text>
-                        </Animated.View>
-                      </>
+                      // true and next
+                      <Animated.View
+                        style={{
+                          opacity: this.state.nextO,
+                          marginTop: this.state.nextMt.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [20, 0],
+                          }),
+                        }}>
+                        <IconFA
+                          name="check"
+                          style={styles.align.self}
+                          size={40}
+                          color="white"
+                        />
+                        <Text style={s.textChecking}>
+                          <Text>Login success!</Text>
+                        </Text>
+                      </Animated.View>
                     ) : (
-                      <>
-                        {/* loading check user */}
-                        <Animated.View
-                          style={[
-                            {
-                              opacity: this.state.checkingOpacity,
-                              marginTop: this.state.checkingMt.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [20, 0],
-                              }),
-                            },
-                          ]}>
-                          <ActivityIndicator
-                            style={[styles.margin.top[20]]}
-                            color="white"
-                            size="large"
-                          />
-                          <Text
-                            style={[
-                              styles.text.center,
-                              styles.text.white,
-                              styles.font.size25,
-                              styles.font.googleSansBold,
-                              styles.margin.top[20],
-                              styles.padding.horizontal[20],
-                            ]}>
-                            <Text>Please wait</Text>
-                          </Text>
-                        </Animated.View>
-                      </>
+                      // loading check user
+                      <Animated.View
+                        style={{
+                          opacity: this.state.checkO,
+                          marginTop: this.state.checkMt.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [20, 0],
+                          }),
+                        }}>
+                        <ActivityIndicator
+                          style={[styles.margin.top[20]]}
+                          color="white"
+                          size="large"
+                        />
+                        <Text style={s.textChecking}>
+                          <Text>Please wait</Text>
+                        </Text>
+                      </Animated.View>
                     )}
                   </>
                 ) : (
@@ -391,55 +292,20 @@ export default class AuthScreen extends Component {
             </Animated.View>
             {/* middle */}
             <Animated.View
-              style={[
-                styles.custom._.bgMiddle,
-                styles.width.percent[90],
-                styles.shadow.md,
-                {opacity: this.state.TextTitleOpacity},
-              ]}>
+              style={[s.bgMiddle, {opacity: this.state.TextTitleO}]}>
               <Animated.View
-                style={[
-                  {
-                    marginTop: this.state.TextTitleMt.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [20, 0],
-                    }),
-                  },
-                ]}>
-                <Text
-                  style={[
-                    styles.custom._.textContainer,
-                    styles.text.whiteRed,
-                    styles.font.size30,
-                    styles.font.googleSansBold,
-                  ]}>
-                  Point of Sales App
-                </Text>
+                style={{
+                  marginTop: this.state.TextTitleMt.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [20, 0],
+                  }),
+                }}>
+                <Text style={s.textTitle}>Point of Sales App</Text>
               </Animated.View>
-              <View
-                style={[
-                  styles.custom._.formArea,
-                  styles.bg.white,
-                  styles.shadow.md,
-                  styles.margin.vertical[20],
-                  styles.padding.vertical[20],
-                ]}>
-                <Text
-                  style={[
-                    styles.custom._.textContainer,
-                    styles.text.grayBlack,
-                    styles.font.size25,
-                    styles.font.air,
-                  ]}>
-                  TosmCafe
-                </Text>
-                {/* <Form
-                  style={[
-                    styles.width.percent[90],
-                    styles.align.self,
-                    {paddingRight: 17},
-                  ]}>
-                  <Item floatingLabel style={{borderColor: colorBlue}}>
+              <View style={s.formArea}>
+                <Text style={s.formTitle}>TosmCafe</Text>
+                <Form style={s.form}>
+                  <Item floatingLabel style={s.formBorderColor}>
                     <Label style={styles.font.air}>Username</Label>
                     <Input
                       onChangeText={this.handleChange('username')}
@@ -447,7 +313,7 @@ export default class AuthScreen extends Component {
                       value={this.state.username}
                     />
                   </Item>
-                  <Item floatingLabel style={{borderColor: colorBlue}}>
+                  <Item floatingLabel style={s.formBorderColor}>
                     <Label style={styles.font.air}>Password</Label>
                     <Input
                       onChangeText={this.handleChange('password')}
@@ -456,30 +322,14 @@ export default class AuthScreen extends Component {
                       value={this.state.password}
                     />
                   </Item>
-                </Form> */}
+                </Form>
                 {this.state.login ? (
-                  <Text
-                    style={[
-                      styles.text.center,
-                      styles.text.blue,
-                      styles.font.size12,
-                      styles.font.googleSansBold,
-                      styles.margin.bottom[20],
-                    ]}>
-                    Incorrect username/password!
-                  </Text>
+                  <Text style={s.inputEmpty}>Incorrect username/password!</Text>
                 ) : (
                   <Text />
                 )}
                 {this.state.form ? (
-                  <Text
-                    style={[
-                      styles.text.center,
-                      styles.text.blue,
-                      styles.font.size12,
-                      styles.font.googleSansBold,
-                      styles.margin.bottom[20],
-                    ]}>
+                  <Text style={s.inputEmpty}>
                     Please input username & password!
                   </Text>
                 ) : (
@@ -487,21 +337,9 @@ export default class AuthScreen extends Component {
                 )}
                 <TouchableOpacity
                   onPress={() => this.handleSubmit()}
-                  style={[
-                    styles.bg.blue,
-                    styles.shadow.md,
-                    styles.custom._.btn,
-                    styles.margin.bottom[10],
-                  ]}>
+                  style={s.btn}>
                   <View>
-                    <Text
-                      style={[
-                        styles.text.white,
-                        styles.font.air,
-                        styles.text.center,
-                      ]}>
-                      Login
-                    </Text>
+                    <Text style={s.btnText}>Login</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -510,7 +348,7 @@ export default class AuthScreen extends Component {
             {/* bottom */}
             <Animated.View
               style={[
-                styles.custom._.bgBottom,
+                s.bgBottom,
                 {
                   height: this.state.BgBottom.interpolate({
                     inputRange: [0, 1],
@@ -524,19 +362,7 @@ export default class AuthScreen extends Component {
                   style={[
                     this.state.shadowOval ? styles.shadow.md : styles.shadow.n,
                     styles.bg.blue,
-                    {
-                      position: 'absolute',
-                      top: -600,
-                      width: Dimensions.get('window').width + 440,
-                      height: Dimensions.get('window').width + 440,
-                      borderStartWidth: 0,
-                      borderBottomStartRadius: 1000,
-                      transform: [
-                        {
-                          rotate: '-45deg',
-                        },
-                      ],
-                    },
+                    s.oval,
                   ]}
                 />
               </View>
@@ -548,3 +374,73 @@ export default class AuthScreen extends Component {
     );
   }
 }
+
+// styles
+const s = {
+  form: [styles.width.percent[90], styles.align.self, {paddingRight: 17}],
+  scrollView: [styles.bg.whiteSmoke, {flex: 1}],
+  bgTop: [styles.bg.blue, styles.shadow.none, styles.custom._.bgTop],
+  textChecking: [
+    styles.text.center,
+    styles.text.white,
+    styles.font.size25,
+    styles.font.googleSansBold,
+    styles.margin.top[20],
+    styles.padding.horizontal[20],
+  ],
+  bgMiddle: [
+    styles.custom._.bgMiddle,
+    styles.width.percent[90],
+    styles.shadow.md,
+  ],
+  textTitle: [
+    styles.custom._.textContainer,
+    styles.text.whiteRed,
+    styles.font.size30,
+    styles.font.googleSansBold,
+  ],
+  formArea: [
+    styles.custom._.formArea,
+    styles.bg.white,
+    styles.shadow.md,
+    styles.margin.vertical[20],
+    styles.padding.vertical[20],
+  ],
+  formTitle: [
+    styles.custom._.textContainer,
+    styles.text.grayBlack,
+    styles.font.size25,
+    styles.font.air,
+  ],
+  formBorderColor: [{borderColor: colorBlue}],
+  inputEmpty: [
+    styles.text.center,
+    styles.text.blue,
+    styles.font.size12,
+    styles.font.googleSansBold,
+    styles.margin.bottom[20],
+  ],
+  btn: [
+    styles.bg.blue,
+    styles.shadow.md,
+    styles.custom._.btn,
+    styles.margin.bottom[10],
+  ],
+  btnText: [styles.text.white, styles.font.air, styles.text.center],
+  bgBottom: [styles.custom._.bgBottom],
+  oval: [
+    {
+      position: 'absolute',
+      top: -600,
+      width: Dimensions.get('window').width + 440,
+      height: Dimensions.get('window').width + 440,
+      borderStartWidth: 0,
+      borderBottomStartRadius: 1000,
+      transform: [
+        {
+          rotate: '-45deg',
+        },
+      ],
+    },
+  ],
+};

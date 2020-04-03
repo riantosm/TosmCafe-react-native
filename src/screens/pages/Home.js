@@ -18,8 +18,9 @@ import MenuComp from '../../components/MenuCompo';
 
 // Styles
 import styles from '../../styles/Styles';
-import ListCategoryComp from '../../components/ListCategoryComp';
+import ListProductComp from '../../components/ListProductComp';
 import VersionComp from '../../components/VersionComp';
+import HomeComp from '../../components/HomeComp';
 
 let colorBlue = '#294EA0';
 
@@ -40,11 +41,39 @@ export default class Home extends Component {
       MenuOpacity: new Animated.Value(0),
       MenuMt: new Animated.Value(0),
 
-      ListCategoryOpacity: new Animated.Value(0),
-      ListCategoryMt: new Animated.Value(0),
+      LProductOpacity: new Animated.Value(0),
+      LProductMt: new Animated.Value(0),
+
+      HomeOpacity: new Animated.Value(0),
+      HomeMt: new Animated.Value(0),
 
       VersionOpacity: new Animated.Value(0),
 
+      menu: 'home',
+
+      recentOrder: [
+        {
+          id: 1,
+          cashier: 'Admin',
+          invoice: 12356789,
+          totalOrder: 15000,
+          date: '20-02-2020',
+        },
+        {
+          id: 2,
+          cashier: 'Admin',
+          invoice: 42523123,
+          totalOrder: 55000,
+          date: '20-02-2020',
+        },
+        {
+          id: 3,
+          cashier: 'Admin',
+          invoice: 7462513,
+          totalOrder: 4500,
+          date: '20-02-2020',
+        },
+      ],
       listCategory: [
         {id: 1, name: 'All'},
         {id: 2, name: 'Food'},
@@ -88,137 +117,157 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.openOval();
+    this.showOval(true);
   }
 
-  openOval() {
+  // animation{
+  animaT = (toValue, duration, useNativeDriver) => ({
+    toValue,
+    duration,
+    useNativeDriver,
+  });
+
+  animaS = (toValue, tension, friction, duration, useNativeDriver) => ({
+    toValue,
+    tension,
+    friction,
+    duration,
+    useNativeDriver,
+  });
+
+  showOval(status) {
     const {BgTop, BgBottom, BgMiddle} = this.state;
     Animated.parallel([
       // open up bg oval
-      Animated.timing(BgTop, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(BgBottom, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(() => {
-        this.setState({
-          shadowOval: true,
-        }),
-          // show title
-          this.showTitle();
-      }),
+      Animated.timing(BgTop, this.animaT(status ? 1 : 0, 1000, false)).start(),
+      Animated.timing(BgBottom, this.animaT(status ? 1 : 0, 1000, false)).start(
+        () => {
+          this.setState({
+            shadowOval: true,
+          }),
+            // show title
+            this.showTitle(true);
+        },
+      ),
     ]);
   }
 
-  showTitle() {
+  showTitle(status) {
     const {TitleMt, TitleOpacity} = this.state;
     Animated.parallel([
-      Animated.timing(TitleMt, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(),
-      Animated.timing(TitleOpacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(() => {
+      Animated.timing(TitleMt, this.animaT(status ? 1 : 0, 500, false)).start(),
+      Animated.timing(
+        TitleOpacity,
+        this.animaT(status ? 1 : 0, 500, false),
+      ).start(() => {
         // show history
-        this.showHistory(),
+        this.showHistory(true),
           // show menu
           setTimeout(() => {
-            this.showMenu();
+            this.showMenu(true);
             // show list category
             setTimeout(() => {
-              this.showListCategory();
-              this.version();
+              this.changeComponent('home');
+              this.showVersion(true);
             }, 500);
           }, 500);
       }),
     ]);
   }
 
-  showHistory() {
+  showHistory(status) {
     const {HistoryOpacity, HistoryToCenter} = this.state;
     Animated.parallel([
-      Animated.timing(HistoryOpacity, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start(),
-      Animated.timing(HistoryToCenter, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: false,
-      }).start(),
+      Animated.timing(
+        HistoryOpacity,
+        this.animaT(status ? 1 : 0, 1000, false),
+      ).start(),
+      Animated.timing(
+        HistoryToCenter,
+        this.animaT(status ? 1 : 0, 1000, false),
+      ).start(),
     ]);
   }
 
-  showMenu() {
+  showMenu(status) {
     const {MenuOpacity, MenuMt} = this.state;
     Animated.parallel([
-      Animated.timing(MenuOpacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(),
-      Animated.spring(MenuMt, {
-        toValue: 1,
-        tension: 10,
-        friction: 2,
-        duration: 200,
-        useNativeDriver: false,
-      }).start(),
+      Animated.timing(
+        MenuOpacity,
+        this.animaT(status ? 1 : 0, 500, false),
+      ).start(),
+      Animated.spring(
+        MenuMt,
+        this.animaS(status ? 1 : 0, 10, 2, 200, false),
+      ).start(),
     ]);
   }
 
-  showListCategory() {
-    const {ListCategoryOpacity, ListCategoryMt} = this.state;
+  changeComponent(component) {
+    component === 'product' ? (
+      (this.showListHistory(false),
+      setTimeout(() => {
+        this.setState({menu: 'product'}), this.showListProduct(true);
+      }, 500))
+    ) : component === 'home' ? (
+      (this.showListProduct(false),
+      setTimeout(() => {
+        this.setState({menu: 'home'}), this.showListHistory(true);
+      }, 500))
+    ) : (
+      <></>
+    );
+  }
+
+  showListHistory(status) {
+    const {HomeOpacity, HomeMt} = this.state;
     Animated.parallel([
-      Animated.timing(ListCategoryOpacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(),
-      Animated.spring(ListCategoryMt, {
-        toValue: 1,
-        tension: 10,
-        friction: 2,
-        duration: 500,
-        useNativeDriver: false,
-      }).start(),
+      Animated.timing(
+        HomeOpacity,
+        this.animaT(status ? 1 : 0, 500, false),
+      ).start(),
+      Animated.spring(
+        HomeMt,
+        this.animaS(status ? 1 : 0, 10, 2, 500, false),
+      ).start(),
     ]);
   }
 
-  version() {
+  showListProduct(status) {
+    const {LProductOpacity, LProductMt} = this.state;
+    Animated.parallel([
+      Animated.timing(
+        LProductOpacity,
+        this.animaT(status ? 1 : 0, 500, false),
+      ).start(),
+      Animated.spring(
+        LProductMt,
+        this.animaS(status ? 1 : 0, 10, 2, 500, false),
+      ).start(),
+    ]);
+  }
+
+  showVersion(status) {
     const {VersionOpacity} = this.state;
     Animated.parallel([
-      Animated.timing(VersionOpacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(),
+      Animated.timing(
+        VersionOpacity,
+        this.animaT(status ? 1 : 0, 500, false),
+      ).start(),
     ]);
   }
+  // }animation
 
   render() {
     return (
       <>
         <StatusBar backgroundColor={'#fff'} barStyle="dark-content" />
-        <ScrollView
-          behavior="padding"
-          style={[styles.bg.whiteSmoke, {flex: 1}]}>
+        <ScrollView behavior="padding" style={s.scrollView}>
           <View style={styles.container.center}>
             {/* top */}
             <Animated.View
               style={[
-                styles.bg.blue,
-                styles.shadow.none,
-                styles.custom._.bgTop,
+                s.bgTop,
                 {
                   height: this.state.BgTop.interpolate({
                     inputRange: [0, 1],
@@ -231,84 +280,49 @@ export default class Home extends Component {
             {/* top */}
 
             {/* middle */}
-            <Animated.View
-              style={[
-                styles.custom._.bgMiddle,
-                styles.shadow.md,
-                {opacity: 1, top: 0},
-              ]}>
+            <Animated.View style={s.bgMiddle}>
               <Animated.View
                 style={[
+                  styles.bg.white,
                   {
-                    marginTop: 0,
+                    opacity: this.state.TitleOpacity,
+                    height: 18,
+                    top: this.state.TitleMt.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [-120, 0],
+                    }),
                   },
                 ]}>
-                <Animated.View
-                  style={[
-                    styles.bg.white,
-                    {
-                      opacity: this.state.TitleOpacity,
-                      height: 18,
-                      top: this.state.TitleMt.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [-120, 0],
-                      }),
-                    },
-                  ]}>
-                  <View style={[styles.flex.directionRow]}>
-                    <View
-                      style={[
-                        styles.width.percent[20],
-                        styles.bg.blue,
-                        styles.custom._.logoHomeLeft,
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.bg.white,
-                        styles.width.percent[60],
-                        styles.custom._.logoHome,
-                      ]}>
-                      <Text
-                        style={[
-                          styles.font.air,
-                          styles.text.blue,
-                          styles.text.center,
-                          styles.font.size25,
-                          styles.margin.top[10],
-                        ]}>
-                        TosmCafe
-                      </Text>
-                    </View>
-                    <View
-                      style={[
-                        styles.width.percent[20],
-                        styles.bg.blue,
-                        styles.custom._.logoHomeRight,
-                      ]}
-                    />
+                <View style={[styles.flex.directionRow]}>
+                  <View style={s.logoHomeLeft} />
+                  <View style={s.logoHomeCenter}>
+                    <Text style={s.logoHomeText}>TosmCafe</Text>
                   </View>
-                </Animated.View>
-
-                {/* History{ */}
-                <Animated.View style={{opacity: this.state.HistoryOpacity}}>
-                  <HistoryComp toCenter={this.state.HistoryToCenter} />
-                </Animated.View>
-                {/* }History */}
-
-                {/* Menu{ */}
-                <Animated.View
-                  style={{
-                    opacity: this.state.MenuOpacity,
-                    top: this.state.MenuMt.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [20, 0],
-                    }),
-                  }}>
-                  <MenuComp />
-                </Animated.View>
-                {/* }Menu */}
+                  <View style={s.logoHomeRight} />
+                </View>
               </Animated.View>
+
+              {/* History{ */}
+              <Animated.View style={{opacity: this.state.HistoryOpacity}}>
+                <HistoryComp toCenter={this.state.HistoryToCenter} />
+              </Animated.View>
+              {/* }History */}
+
+              {/* Menu{ */}
+              <Animated.View
+                style={{
+                  opacity: this.state.MenuOpacity,
+                  top: this.state.MenuMt.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [20, 0],
+                  }),
+                }}>
+                <MenuComp
+                  home={() => this.changeComponent('home')}
+                  product={() => this.changeComponent('product')}
+                />
+              </Animated.View>
+              {/* }Menu */}
             </Animated.View>
             {/* middle */}
 
@@ -344,22 +358,38 @@ export default class Home extends Component {
                 />
               </View>
 
-              {/* Category{ */}
-              <Animated.View
-                style={[
-                  styles.shadow.md,
-                  {
-                    opacity: this.state.ListCategoryOpacity,
-                    marginTop: 50,
-                  },
-                ]}>
-                <ListCategoryComp
-                  ListCategoryMt={this.state.ListCategoryMt}
-                  category={this.state.listCategory}
-                  product={this.state.listProduct}
-                />
-              </Animated.View>
-              {/* }Category */}
+              {this.state.menu === 'home' ? (
+                <Animated.View
+                  style={[
+                    styles.shadow.md,
+                    {
+                      opacity: this.state.HomeOpacity,
+                      marginTop: 50,
+                    },
+                  ]}>
+                  <HomeComp
+                    HomeMt={this.state.HomeMt}
+                    order={this.state.recentOrder}
+                  />
+                </Animated.View>
+              ) : this.state.menu === 'product' ? (
+                <Animated.View
+                  style={[
+                    styles.shadow.md,
+                    {
+                      opacity: this.state.LProductOpacity,
+                      marginTop: 50,
+                    },
+                  ]}>
+                  <ListProductComp
+                    ListCategoryMt={this.state.LProductMt}
+                    category={this.state.listCategory}
+                    product={this.state.listProduct}
+                  />
+                </Animated.View>
+              ) : (
+                <></>
+              )}
             </Animated.View>
             {/* bottom */}
             <Animated.View
@@ -377,3 +407,32 @@ export default class Home extends Component {
     );
   }
 }
+
+// styles
+const s = {
+  scrollView: [styles.bg.whiteSmoke, {flex: 1}],
+  bgTop: [styles.bg.blue, styles.shadow.none, styles.custom._.bgTop],
+  bgMiddle: [styles.custom._.bgMiddle, styles.shadow.md, {opacity: 1, top: 0}],
+  logoHomeLeft: [
+    styles.width.percent[20],
+    styles.bg.blue,
+    styles.custom._.logoHomeLeft,
+  ],
+  logoHomeCenter: [
+    styles.bg.white,
+    styles.width.percent[60],
+    styles.custom._.logoHome,
+  ],
+  logoHomeRight: [
+    styles.width.percent[20],
+    styles.bg.blue,
+    styles.custom._.logoHomeRight,
+  ],
+  logoHomeText: [
+    styles.font.air,
+    styles.text.blue,
+    styles.text.center,
+    styles.font.size25,
+    styles.margin.top[10],
+  ],
+};

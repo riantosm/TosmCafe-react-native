@@ -20,7 +20,7 @@ const MenuComp = props => {
       ]}>
       <TouchableOpacity
         style={[styles.custom._.itemMenu]}
-        onPress={() => alert('Menu History')}>
+        onPress={() => props.home()}>
         <View>
           <IconMC
             name="home"
@@ -35,7 +35,7 @@ const MenuComp = props => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.custom._.itemMenu]}
-        onPress={() => alert('Menu Product')}>
+        onPress={() => props.product()}>
         <View>
           <IconMC
             name="silverware"
